@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { marked } from 'marked';
 import './ChatInterface.css';
+import { API_CONFIG } from '../config/api';
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([
@@ -40,7 +41,7 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch(API_CONFIG.chatEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pergunta: inputValue, modo: 'gestor' })
