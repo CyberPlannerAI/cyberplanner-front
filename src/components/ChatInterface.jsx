@@ -48,13 +48,15 @@ export default function ChatInterface() {
       });
 
       const data = await response.json();
-      
+
       // Remover mensagem de carregamento
       setMessages(prev => prev.filter(msg => msg.id !== loadingId));
 
       // Formatar resposta com markdown
-      const respostaFormatada = marked.parse(data.resposta);
-
+      const respostaFormatada = data.resposta
+        ? marked.parse(data.resposta)
+        : "Resposta inválida recebida da API.";
+      
       // Adicionar resposta da IA
       setMessages(prev => [...prev, {
         id: nextIdRef.current++,
@@ -64,7 +66,7 @@ export default function ChatInterface() {
       }]);
     } catch (error) {
       console.error('Erro:', error);
-      
+
       // Remover mensagem de carregamento
       setMessages(prev => prev.filter(msg => msg.id !== loadingId));
 
@@ -89,7 +91,7 @@ export default function ChatInterface() {
   return (
     <div className="chat-container">
       <div className="header">CyberPlanner - Gestor IA</div>
-      
+
       <div className="chat-box" ref={chatBoxRef}>
         {messages.map(msg => (
           <div
